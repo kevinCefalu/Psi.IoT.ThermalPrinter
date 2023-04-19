@@ -45,18 +45,18 @@ def onButtonHeld(btn):
     time.sleep(0.025)
   time.sleep(2)
 
-  printer.test_page()
+#   printer.test_page()
 
-#   printer.feed(1)
-#   printer.justify('C')
-#   printer.setSize('L')
-#   printer.println("Kevin Cefalu")
-#   printer.setSize('M')
-#   printer.println("Netchex, Senior DevOps Engineer III")
-#   printer.feed(2)
-#   printer.println("Mandeville, La 70448")
-#   printer.println("kcefalu@netchexonline.com")
-#   printer.feed(4)
+  printer.feed(1)
+  printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
+  printer.size = adafruit_thermal_printer.SIZE_LARGE
+  printer.print("Kevin Cefalu")
+  printer.size = adafruit_thermal_printer.SIZE_MEDIUM
+  printer.print("Netchex, Senior DevOps Engineer III")
+  printer.feed(2)
+  printer.print("Mandeville, La 70448")
+  printer.print("kcefalu@netchexonline.com")
+  printer.feed(4)
 
 #   # Restore printer to defaults
 #   printer.setDefault()
