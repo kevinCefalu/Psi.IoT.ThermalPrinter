@@ -38,28 +38,27 @@ def ease_in_out(steps):
   for t in linear(steps):
     yield 2 * t * t if t < 0.5 else (4 - 2 * t) * t - 1
 
-def onButtonHeld(btn):
-  # Personal Business Card requested
-  for color in Color('black').gradient(Color('red'), steps = 100):
-    btnLed.color = color
-    time.sleep(0.025)
-  time.sleep(2)
-
-#   printer.test_page()
-
+def printWorkDetails():
   printer.feed(1)
   printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
   printer.size = adafruit_thermal_printer.SIZE_LARGE
   printer.print("Kevin Cefalu")
   printer.size = adafruit_thermal_printer.SIZE_MEDIUM
-  printer.print("Netchex, Senior DevOps Engineer III")
+  printer.print("Netchex, Senior DevOps")
+  printer.print("Engineer III")
   printer.feed(2)
   printer.print("Mandeville, La 70448")
   printer.print("kcefalu@netchexonline.com")
   printer.feed(4)
 
-#   # Restore printer to defaults
-#   printer.setDefault()
+def onButtonHeld(btn):
+  for color in Color('black').gradient(Color('red'), steps = 100):
+    btnLed.color = color
+    time.sleep(0.025)
+
+  time.sleep(2)
+
+  printWorkDetails()
 
   for color in Color('red').gradient(Color('green'), steps = 100):
     btnLed.color = color
@@ -67,7 +66,6 @@ def onButtonHeld(btn):
 
   time.sleep(5)
   btnLed.color = Color('black')
-  return
 
 btn.when_held = onButtonHeld
 
