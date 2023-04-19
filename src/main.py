@@ -39,6 +39,7 @@ def ease_in_out(steps):
     yield 2 * t * t if t < 0.5 else (4 - 2 * t) * t - 1
 
 def printWorkDetails():
+  printer.warm_up()
   printer.feed(1)
   printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
   printer.size = adafruit_thermal_printer.SIZE_LARGE
