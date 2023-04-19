@@ -62,6 +62,7 @@ def printWorkDetails():
   for line in random.choice(jokes):
     printer.print(line)
   printer.feed(4)
+  printer.set_defaults()
 
 def printTest():
   printer.warm_up()
