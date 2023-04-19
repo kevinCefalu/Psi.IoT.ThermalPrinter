@@ -62,7 +62,3 @@ btn.when_held = onButtonHeld
 #   # On Keyboard Interrupt, stop the loop
 #   except KeyboardInterrupt:
 #     running = False
-
-# Stop PWM
-btn.stop()
-btnLed.close()
