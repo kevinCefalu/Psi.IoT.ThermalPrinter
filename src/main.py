@@ -45,10 +45,10 @@ def printWorkDetails():
   printer.size = adafruit_thermal_printer.SIZE_LARGE
   printer.print("Kevin Cefalu")
   printer.size = adafruit_thermal_printer.SIZE_MEDIUM
-  printer.print("Netchex, Senior DevOps")
-  printer.print("Engineer III")
+  printer.print("Netchex Online")
+  printer.print("DevOps Engineer III")
   printer.feed(2)
-  printer.print("Mandeville, La 70448")
+  printer.print("Mandeville, LA 70448")
   printer.print("kcefalu@netchexonline.com")
   printer.feed(4)
 
@@ -56,15 +56,16 @@ def onButtonHeld(btn):
   logging.debug("Button held")
 
   if printer.has_paper():
-    fadeFromToColor(Color('black'), Color('gold'))
-    btnLed.pulse(0.5, 0.5, Color('gold'), Color('black'), 10)
+    btnLed.pulse(0.5, 0.5, Color('teal'), Color('black'), 4)
+    fadeFromToColor(Color('black'), Color('greenyellow'))
     time.sleep(2)
     printWorkDetails()
-    fadeFromToColor(Color('gold'), Color('green'))
+    fadeFromToColor(Color('teal'), Color('black'))
+    btnLed.pulse(0.5, 0.5, Color('green'), Color('black'), 4)
     time.sleep(2)
   else:
     logging.error("Printer might be out of paper, or TX/RX is disconnected!")
-    btnLed.pulse(0.5, 0.5, Color('red'), Color('black'), 10)
+    btnLed.pulse(0.5, 0.5, Color('red'), Color('black'), 8)
 
   btnLed.color = Color('black')
 
