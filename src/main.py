@@ -57,7 +57,9 @@ def printWorkDetails():
   printer.feed(2)
   printer.print("Mandeville, LA 70448")
   printer.print("kcefalu@netchexonline.com")
-  printer.feed(2)
+  printer.feed(1)
+  printer.print("--------------------------------")
+  printer.feed(1)
   printer.size = adafruit_thermal_printer.SIZE_SMALL
   for line in random.choice(jokes):
     printer.print(line)
