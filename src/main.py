@@ -1,3 +1,4 @@
+import logging
 import time
 import numpy as np
 import serial
@@ -17,14 +18,27 @@ printerClass = 2.69
 printerBaudRate = 9600
 printerTimeout = 3000
 
+logging.basicConfig(level = logging.INFO, file = 'print-requests.log',
+  format = '%(asctime)s :: %(levelname)s :: %(message)s')
+
+logging.info("Starting print request service...")
+
 btn = Button(btnPin)
 btnLed = RGBLED(btnLedRedPin, btnLedGreenPin, btnLedBluePin, False)
+logging.debug("Button setup")
 
 thermalPrinterClass = adafruit_thermal_printer.get_printer_class(printerClass)
 uart = serial.Serial(serialPath, baudrate = printerBaudRate, timeout = printerTimeout)
 printer = thermalPrinterClass(uart)
+logging.debug("Printer setup")
+
+def fadeFromToColor(fromColor, toColor, steps = 100, delay = 0.025):
+  for color in fromColor.gradient(toColor, steps = steps):
+    btnLed.color = color
+    time.sleep(delay)
 
 def printWorkDetails():
+  logging.info("Printing work details...")
   printer.warm_up()
   printer.feed(1)
   printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
@@ -38,12 +52,8 @@ def printWorkDetails():
   printer.print("kcefalu@netchexonline.com")
   printer.feed(4)
 
-def fadeFromToColor(fromColor, toColor, steps = 100, delay = 0.025):
-  for color in fromColor.gradient(toColor, steps = steps):
-    btnLed.color = color
-    time.sleep(delay)
-
 def onButtonHeld(btn):
+  logging.debug("Button held")
   fadeFromToColor(Color('black'), Color('yellow'))
   time.sleep(2)
   printWorkDetails()
@@ -53,4 +63,8 @@ def onButtonHeld(btn):
 
 btn.when_held = onButtonHeld
 
-message = input("Press enter to quit\n\n")
+logging.info("Started print request service...")
+
+message = input("Press enter to quit...")
+
+logging.info("Stopping print request service.")
