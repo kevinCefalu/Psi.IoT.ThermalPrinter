@@ -1,6 +1,6 @@
 import time
 import numpy as np
-from gpiozero import Button, RGBLED, linear
+from gpiozero import Button, RGBLED
 from colorzero import Color
 from lib import Adafruit_Thermal
 
