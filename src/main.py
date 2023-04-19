@@ -2,7 +2,8 @@ import time
 import numpy as np
 from gpiozero import Button, RGBLED
 from colorzero import Color
-from lib import Adafruit_Thermal
+import serial
+import adafruit_thermal_printer
 
 # Define the pins
 
@@ -16,7 +17,10 @@ printerTimeout = 5
 
 btn = Button(btnPin)
 btnLed = RGBLED(btnLedRedPin, btnLedGreenPin, btnLedBluePin, False)
-printer = Adafruit_Thermal("/dev/serial0", printerBaudRate, timeout = printerTimeout)
+
+ThermalPrinter = adafruit_thermal_printer.get_printer_class(2.69)
+uart = serial.Serial("/dev/serial0", baudrate=9600, timeout=3000)
+printer = ThermalPrinter(uart)
 
 def linear(steps):
   for t in range(steps):
@@ -40,16 +44,19 @@ def onButtonHeld(btn):
     btnLed.color = color
     time.sleep(0.025)
   time.sleep(2)
-  printer.feed(1)
-  printer.justify('C')
-  printer.setSize('L')
-  printer.println("Kevin Cefalu")
-  printer.setSize('M')
-  printer.println("Netchex, Senior DevOps Engineer III")
-  printer.feed(2)
-  printer.println("Mandeville, La 70448")
-  printer.println("kcefalu@netchexonline.com")
-  printer.feed(4)
+
+  printer.test_page()
+
+#   printer.feed(1)
+#   printer.justify('C')
+#   printer.setSize('L')
+#   printer.println("Kevin Cefalu")
+#   printer.setSize('M')
+#   printer.println("Netchex, Senior DevOps Engineer III")
+#   printer.feed(2)
+#   printer.println("Mandeville, La 70448")
+#   printer.println("kcefalu@netchexonline.com")
+#   printer.feed(4)
 
   # Restore printer to defaults
   printer.setDefault()
@@ -64,30 +71,3 @@ def onButtonHeld(btn):
 btn.when_held = onButtonHeld
 
 message = input("Press enter to quit\n\n")
-
-# running = True
-
-# while running:
-#   try:
-#     # for x in range(100, 0, -1):
-#     #   btnLedRed.ChangeDutyCycle(x)
-#     #   time.sleep(0.025)
-
-#     # Set LED to RED
-#     btnLed.color = Color('red')
-#     print('Red')
-#     time.sleep(3)
-
-#     # Set LED to GREEN
-#     btnLed.color = Color('green')
-#     print('Green')
-#     time.sleep(3)
-
-#     # Set LED to BLUE
-#     btnLed.color = Color('blue')
-#     print('Blue')
-#     time.sleep(3)
-
-#   # On Keyboard Interrupt, stop the loop
-#   except KeyboardInterrupt:
-#     running = False
