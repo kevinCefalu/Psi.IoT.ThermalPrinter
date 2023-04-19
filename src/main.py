@@ -1,3 +1,5 @@
+import random
+import json
 import logging
 import time
 import numpy as np
@@ -32,6 +34,9 @@ uart = serial.Serial(serialPath, baudrate = printerBaudRate, timeout = printerTi
 printer = thermalPrinterClass(uart, auto_warm_up = False)
 logging.debug("Printer setup complete")
 
+f = open ('jokes.json', "r")
+jokes = json.loads(f.read())
+
 def fadeFromToColor(fromColor, toColor, steps = 100, delay = 0.025):
   for color in fromColor.gradient(toColor, steps = steps):
     btnLed.color = color
@@ -52,6 +57,10 @@ def printWorkDetails():
   printer.feed(2)
   printer.print("Mandeville, LA 70448")
   printer.print("kcefalu@netchexonline.com")
+  printer.feed(2)
+  printer.size = adafruit_thermal_printer.SIZE_SMALL
+  for line in random.choice(jokes):
+    printer.print(line)
   printer.feed(4)
 
 def printTest():
@@ -61,15 +70,10 @@ def printTest():
   printer.test_page()
 
   # Move the paper forward two lines:
-  printer.feed(2)
+  printer.feed(1)
 
   # Print a line of text:
   printer.print("Hello world!")
-
-  # Print a bold line of text:
-  printer.bold = True
-  printer.print("Bold hello world!")
-  printer.bold = False
 
   # Print a normal/thin underline line of text:
   printer.underline = adafruit_thermal_printer.UNDERLINE_THIN
@@ -87,11 +91,6 @@ def printTest():
   printer.print("Inverse hello world!")
   printer.inverse = False
 
-  # Print an upside down line.
-  printer.upside_down = True
-  printer.print("Upside down hello!")
-  printer.upside_down = False
-
   # Print a double height line.
   printer.double_height = True
   printer.print("Double height!")
@@ -101,11 +100,6 @@ def printTest():
   printer.double_width = True
   printer.print("Double width!")
   printer.double_width = False
-
-  # Print a strike-through line.
-  printer.strike = True
-  printer.print("Strike-through hello!")
-  printer.strike = False
 
   # Print medium size text.
   printer.size = adafruit_thermal_printer.SIZE_MEDIUM
@@ -134,7 +128,7 @@ def printTest():
   printer.print_barcode("123456789012", printer.UPC_A)
 
   # Feed a few lines to see everything.
-  printer.feed(2)
+  printer.feed(4)
 
 def onButtonHeld(btn):
   logging.debug("Button held")
