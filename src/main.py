@@ -58,12 +58,13 @@ def onButtonHeld(btn):
 #   printer.println("kcefalu@netchexonline.com")
 #   printer.feed(4)
 
-  # Restore printer to defaults
-  printer.setDefault()
+#   # Restore printer to defaults
+#   printer.setDefault()
 
   for color in Color('red').gradient(Color('green'), steps = 100):
     btnLed.color = color
     time.sleep(0.025)
+
   time.sleep(5)
   btnLed.color = Color('black')
   return
