@@ -54,11 +54,18 @@ def printWorkDetails():
 
 def onButtonHeld(btn):
   logging.debug("Button held")
-  fadeFromToColor(Color('black'), Color('gold'))
-  time.sleep(2)
-  printWorkDetails()
-  fadeFromToColor(Color('gold'), Color('green'))
-  time.sleep(2)
+
+  if printer.has_paper():
+    fadeFromToColor(Color('black'), Color('gold'))
+    btnLed.pulse(0.5, 0.5, Color('gold'), Color('black'), 10)
+    time.sleep(2)
+    printWorkDetails()
+    fadeFromToColor(Color('gold'), Color('green'))
+    time.sleep(2)
+  else:
+    logging.error("Printer might be out of paper, or TX/RX is disconnected!")
+    btnLed.pulse(0.5, 0.5, Color('red'), Color('black'), 10)
+
   btnLed.color = Color('black')
 
 btn.when_held = onButtonHeld
@@ -67,4 +74,4 @@ logging.info("Started print request service...")
 
 message = input("Press enter to quit...")
 
-logging.info("Stopping print request service.")
+logging.info("Stopped print request service.")
