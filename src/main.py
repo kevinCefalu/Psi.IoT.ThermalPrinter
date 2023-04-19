@@ -25,12 +25,12 @@ logging.info("Starting print request service...")
 
 btn = Button(btnPin)
 btnLed = RGBLED(btnLedRedPin, btnLedGreenPin, btnLedBluePin, False)
-logging.debug("Button setup")
+logging.debug("Button setup complete")
 
 thermalPrinterClass = adafruit_thermal_printer.get_printer_class(printerClass)
 uart = serial.Serial(serialPath, baudrate = printerBaudRate, timeout = printerTimeout)
 printer = thermalPrinterClass(uart)
-logging.debug("Printer setup")
+logging.debug("Printer setup complete")
 
 def fadeFromToColor(fromColor, toColor, steps = 100, delay = 0.025):
   for color in fromColor.gradient(toColor, steps = steps):
@@ -38,7 +38,7 @@ def fadeFromToColor(fromColor, toColor, steps = 100, delay = 0.025):
     time.sleep(delay)
 
 def printWorkDetails():
-  logging.info("Printing work details...")
+  logging.info("Printing work details")
   printer.warm_up()
   printer.feed(1)
   printer.justify = adafruit_thermal_printer.JUSTIFY_CENTER
@@ -54,10 +54,10 @@ def printWorkDetails():
 
 def onButtonHeld(btn):
   logging.debug("Button held")
-  fadeFromToColor(Color('black'), Color('yellow'))
+  fadeFromToColor(Color('black'), Color('gold'))
   time.sleep(2)
   printWorkDetails()
-  fadeFromToColor(Color('yellow'), Color('green'))
+  fadeFromToColor(Color('gold'), Color('green'))
   time.sleep(2)
   btnLed.color = Color('black')
 
