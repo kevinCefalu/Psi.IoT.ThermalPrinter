@@ -18,8 +18,8 @@ printerClass = 2.69
 printerBaudRate = 9600
 printerTimeout = 3000
 
-logging.basicConfig(level = logging.INFO, file = 'print-requests.log',
-  format = '%(asctime)s :: %(levelname)s :: %(message)s')
+logging.basicConfig(level=logging.INFO, filename='print-requests.log',
+                    format='%(asctime)s :: %(levelname)s :: %(message)s')
 
 logging.info("Starting print request service...")
 
