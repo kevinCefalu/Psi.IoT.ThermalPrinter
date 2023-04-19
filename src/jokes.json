@@ -1,18 +1,28 @@
 [
     [
-        "How many developers does it take to change a light bulb?",
+        "How many developers does it",
+        "take to change a light bulb?",
         "None, that's a hardware problem."
     ],
     [
-        "How do you describe a perfect DevOps engineer?",
-        "A person who is able to code, deploy and monitor their own funeral."
+        "How do you describe the",
+        "perfect DevOps engineer?",
+        "Someone who is able to code,",
+        "deploy, and monitor",
+        "their own funeral."
     ],
     [
-        "Why did the chicken cross the road?",
+        "Why did the chicken",
+        "cross the road?",
         "To get to the other server."
     ],
     [
-        "What's the difference between a DevOps engineer and a regular engineer?",
-        "A regular engineer will say \"That's not my job\". A DevOps engineer will say \"I'll take care of it\"."
+        "What's the difference between a",
+        "DevOps engineer and a",
+        "regular engineer?",
+        "A regular engineer will say",
+        "\"That's not my job\".",
+        "A DevOps engineer will say",
+        "\"I'll take care of it\"."
     ]
 ]
