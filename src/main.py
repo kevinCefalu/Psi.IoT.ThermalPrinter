@@ -1,79 +1,93 @@
-import RPi.GPIO as GPIO
 import time
 import numpy as np
+from gpiozero import Button, RGBLED, linear
+from colorzero import Color
+from lib import Adafruit_Thermal
 
 # Define the pins
 
-btn = 23
+btnPin = 23
 btnLedRedPin = 12
 btnLedGreenPin = 13
 btnLedBluePin = 19
 
-btnBounceTime = 400
 printerBaudRate = 9600
 printerTimeout = 5
 
-# Choose a frequency for PWM:
-# Frequency can be any number above 0
-# 256 because we are going to use 8-bit per channel
-frequency = 256
+btn = Button(btnPin)
+btnLed = RGBLED(btnLedRedPin, btnLedGreenPin, btnLedBluePin, False)
+printer = Adafruit_Thermal("/dev/serial0", printerBaudRate, timeout = printerTimeout)
 
-calcDutyCycle = lambda x: 100 - x * 100 / 256
+def linear(steps):
+  for t in range(steps):
+    yield t / (steps - 1)
 
-GPIO.setmode(GPIO.BCM)  # Used for GPIO numbering
-GPIO.setwarnings(False) # Clear warnings
+def ease_in(steps):
+  for t in linear(steps):
+    yield t ** 2
 
-GPIO.setup(btnLedRedPin, GPIO.OUT)
-GPIO.setup(btnLedGreenPin, GPIO.OUT)
-GPIO.setup(btnLedBluePin, GPIO.OUT)
+def ease_out(steps):
+  for t in linear(steps):
+    yield t * (2 - t)
 
-# Set GPIO to PWM mode to frequency defined above
-btnLedRed = GPIO.PWM(btnLedRedPin, frequency)
-btnLedGreen = GPIO.PWM(btnLedGreenPin, frequency)
-btnLedBlue = GPIO.PWM(btnLedBluePin, frequency)
+def ease_in_out(steps):
+  for t in linear(steps):
+    yield 2 * t * t if t < 0.5 else (4 - 2 * t) * t - 1
 
-running = True
+def onButtonHeld(btn):
+  # Personal Business Card requested
+  for color in Color('black').gradient(Color('red'), steps = 100):
+    btnLed.color = color
+    time.sleep(0.025)
+  time.sleep(2)
+  printer.feed(1)
+  printer.justify('C')
+  printer.setSize('L')
+  printer.println("Kevin Cefalu")
+  printer.setSize('M')
+  printer.println("Netchex, Senior DevOps Engineer III")
+  printer.feed(2)
+  printer.println("Mandeville, La 70448")
+  printer.println("kcefalu@netchexonline.com")
+  printer.feed(4)
 
-# Common Anode RGB LED, so we need to invert the PWM signal
-btnLedRed.start(100)
-btnLedGreen.start(100)
-btnLedBlue.start(100)
+  # Restore printer to defaults
+  printer.setDefault()
 
-while running:
-  try:
-    # for x in range(100, 0, -1):
-    #   btnLedRed.ChangeDutyCycle(x)
-    #   time.sleep(0.025)
+  for color in Color('red').gradient(Color('green'), steps = 100):
+    btnLed.color = color
+    time.sleep(0.025)
+  time.sleep(5)
+  btnLed.color = Color('black')
+  return
 
-    # Set LED to RED
-    btnLedRed.ChangeDutyCycle(calcDutyCycle(100))
-    btnLedGreen.ChangeDutyCycle(calcDutyCycle(0))
-    btnLedBlue.ChangeDutyCycle(calcDutyCycle(0))
-    print('Red')
-    time.sleep(3)
+btn.when_held = onButtonHeld
 
-    # Set LED to GREEN
-    btnLedRed.ChangeDutyCycle(calcDutyCycle(0))
-    btnLedGreen.ChangeDutyCycle(calcDutyCycle(100))
-    btnLedBlue.ChangeDutyCycle(calcDutyCycle(0))
-    print('Green')
-    time.sleep(3)
+message = input("Press enter to quit\n\n")
 
-    # Set LED to BLUE
-    btnLedRed.ChangeDutyCycle(calcDutyCycle(0))
-    btnLedGreen.ChangeDutyCycle(calcDutyCycle(0))
-    btnLedBlue.ChangeDutyCycle(calcDutyCycle(100))
-    print('Blue')
-    time.sleep(3)
+# running = True
 
-  # On Keyboard Interrupt, stop the loop
-  except KeyboardInterrupt:
-    running = False
+# while running:
+#   try:
+#     # for x in range(100, 0, -1):
+#     #   btnLedRed.ChangeDutyCycle(x)
+#     #   time.sleep(0.025)
 
-# Stop PWM
-btnLedRed.stop()
-btnLedGreen.stop()
-btnLedBlue.stop()
+#     # Set LED to RED
+#     btnLed.color = Color('red')
+#     print('Red')
+#     time.sleep(3)
 
-# Clean up GPIO
-GPIO.cleanup()
+#     # Set LED to GREEN
+#     btnLed.color = Color('green')
+#     print('Green')
+#     time.sleep(3)
+
+#     # Set LED to BLUE
+#     btnLed.color = Color('blue')
+#     print('Blue')
+#     time.sleep(3)
+
+#   # On Keyboard Interrupt, stop the loop
+#   except KeyboardInterrupt:
+#     running = False
