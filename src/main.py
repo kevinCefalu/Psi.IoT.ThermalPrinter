@@ -54,9 +54,7 @@ def printWorkDetails():
   printer.size = adafruit_thermal_printer.SIZE_MEDIUM
   printer.print("Senior DevOps Engineer III")
   printer.print("Netchex Online")
-#   printer.size = adafruit_thermal_printer.SIZE_SMALL
   printer.feed(2)
-#   printer.size = adafruit_thermal_printer.SIZE_MEDIUM
   printer.print("Mandeville, LA 70448")
   printer.print("kcefalu@netchexonline.com")
   printer.feed(1)
