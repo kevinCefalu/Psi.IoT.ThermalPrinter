@@ -1,3 +1,4 @@
+import os
 import random
 import json
 import logging
@@ -34,7 +35,11 @@ uart = serial.Serial(serialPath, baudrate = printerBaudRate, timeout = printerTi
 printer = thermalPrinterClass(uart, auto_warm_up = False)
 logging.debug("Printer setup complete")
 
-f = open ('jokes.json', "r")
+__location__ = os.path.realpath(
+  os.path.join(os.getcwd(), os.path.dirname(__file__))
+)
+
+f = open(os.path.join(__location__, 'jokes.json'), "r")
 jokes = json.loads(f.read())
 
 def fadeFromToColor(fromColor, toColor, steps = 100, delay = 0.025):
