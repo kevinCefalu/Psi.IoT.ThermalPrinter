@@ -158,6 +158,7 @@ def onButtonHeld(btn):
 btn.when_held = onButtonHeld
 
 logging.info("Started print request service...")
+btnLed.pulse(0.5, 0.5, Color('green'), Color('black'), 4)
 
 message = input("Press enter to quit...")
 
